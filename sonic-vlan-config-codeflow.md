@@ -9,10 +9,10 @@ SONiC (Software for Open Networking in the Cloud) is not one monolithic program.
 The example command used throughout this note:
 
 ```
-config vlan add 100 6,27
+config vlan add 100
 ```
 
-This creates **VLAN 100** and adds ports **6 and 27** as members.
+This creates **VLAN 100** 
 
 ---
 
@@ -67,7 +67,7 @@ Think of it as a relay race: CONFIG_DB → APPL_DB → ASIC_DB, with a different
 
 1. The engineer types:
    ```
-   config vlan add 100 6,27
+   config vlan add 100
    ```
 2. SONiC's CLI is built on the **Click** library, wrapped inside a **Klish XML shell** (this is what gives you the familiar `sonic#` prompt with tab-completion and help text).
 3. The CLI actioner script (`cli_client.py`) doesn't talk to Redis directly. Instead, it converts the command into a **RESTCONF-compliant JSON payload** that follows the OpenConfig YANG model:
@@ -176,4 +176,3 @@ Think of it as a relay race: CONFIG_DB → APPL_DB → ASIC_DB, with a different
 
 ---
 
-*Notes compiled while studying SONiC architecture — part of a personal reference set for GitHub, adapted for a LinkedIn walkthrough post.*
