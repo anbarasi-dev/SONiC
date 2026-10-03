@@ -1,0 +1,17 @@
+name: sonic-fabric
+
+topology:
+  nodes:
+    spine1:
+      kind: sonic-vs
+      image: docker-sonic-vs:latest
+    leaf1:
+      kind: sonic-vs
+      image: docker-sonic-vs:latest
+    leaf2:
+      kind: sonic-vs
+      image: docker-sonic-vs:latest
+
+  links:
+    - endpoints: ["spine1:eth1", "leaf1:eth1"]
+    - endpoints: ["spine1:eth2", "leaf2:eth1"]
