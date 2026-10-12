@@ -1,0 +1,51 @@
+---
+- name: Configure interfaces and BGP on SONiC-VS
+  hosts: switches
+  gather_facts: false
+
+  tasks:
+    - name: Create Loopback0
+      ansible.builtin.shell: |
+        if [ "$(sonic-db-cli CONFIG_DB EXISTS 'LOOPBACK_INTERFACE|Loopback0')" = "1" ]; then exit 0; fi
+        config loopback add Loopback0 && echo ADDED
+      register: lo_result
+      changed_when: "'ADDED' in lo_result.stdout"
+
+    - name: Set Loopback0 IP
+      ansible.builtin.shell: |
+        KEY='LOOPBACK_INTERFACE|Loopback0|{{ loopback_ip }}'
+        if [ "$(sonic-db-cli CONFIG_DB EXISTS "$KEY")" = "1" ]; then exit 0; fi
+        config interface ip add Loopback0 {{ loopback_ip }} && echo ADDED
+      register: lo_ip_result
+      changed_when: "'ADDED' in lo_ip_result.stdout"
+
+    - name: Set interface IPs
+      ansible.builtin.shell: |
+        KEY='INTERFACE|{{ item.name }}|{{ item.ip }}'
+        if [ "$(sonic-db-cli CONFIG_DB EXISTS "$KEY")" = "1" ]; then exit 0; fi
+        config interface ip add {{ item.name }} {{ item.ip }} && echo ADDED
+      loop: "{{ interfaces }}"
+      loop_control:
+        label: "{{ item.name }} {{ item.ip }}"
+      register: if_result
+      changed_when: "'ADDED' in if_result.stdout"
+
+    - name: Start interfaces
+      ansible.builtin.command: "config interface startup {{ item.name }}"
+      loop: "{{ interfaces }}"
+      loop_control:
+        label: "{{ item.name }}"
+      changed_when: false
+
+    - name: Render BGP config
+      ansible.builtin.template:
+        src: bgp.conf.j2
+        dest: /tmp/bgp.conf
+
+    - name: Apply BGP config with vtysh
+      ansible.builtin.command: vtysh -f /tmp/bgp.conf
+      changed_when: false
+
+    - name: Save config
+      ansible.builtin.command: vtysh -c "write memory"
+      changed_when: false

@@ -1,0 +1,14 @@
+configure terminal
+router bgp {{ bgp.asn }}
+ bgp router-id {{ bgp.router_id }}
+ no bgp ebgp-requires-policy
+{% for n in bgp.neighbors %}
+ neighbor {{ n.ip }} remote-as {{ n.asn }}
+{% endfor %}
+ address-family ipv4 unicast
+{% for p in bgp.networks %}
+  network {{ p }}
+{% endfor %}
+ exit-address-family
+end
+write memory

@@ -1,0 +1,23 @@
+---
+- name: Verify BGP on SONiC-VS
+  hosts: switches
+  gather_facts: false
+
+  tasks:
+    - name: BGP summary
+      ansible.builtin.command: vtysh -c "show ip bgp summary"
+      register: summary
+      changed_when: false
+
+    - name: Show BGP summary
+      ansible.builtin.debug:
+        var: summary.stdout_lines
+
+    - name: BGP table
+      ansible.builtin.command: vtysh -c "show ip bgp"
+      register: table
+      changed_when: false
+
+    - name: Show BGP table
+      ansible.builtin.debug:
+        var: table.stdout_lines

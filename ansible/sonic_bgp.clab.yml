@@ -1,0 +1,17 @@
+name: sonic-bgp
+
+topology:
+  nodes:
+    sw1:
+      kind: sonic-vs
+      image: docker-sonic-vs:latest 
+    sw2:
+      kind: sonic-vs
+      image: docker-sonic-vs:latest
+    sw3:
+      kind: sonic-vs
+      image: docker-sonic-vs:latest
+
+  links:
+    - endpoints: ["sw2:eth1", "sw1:eth1"]
+    - endpoints: ["sw2:eth2", "sw3:eth1"]

@@ -1,0 +1,47 @@
+all:
+  vars:
+    # Talk to the containers with "docker exec", so no SSH is needed
+    ansible_connection: community.docker.docker
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_user: root
+  children:
+    switches:
+      hosts:
+        sw1:
+          ansible_host: clab-sonic-bgp-sw1
+          loopback_ip: 1.1.1.1/32
+          interfaces:
+            - {name: Ethernet0, ip: 10.0.12.1/30}
+          bgp:
+            asn: 65001
+            router_id: 1.1.1.1
+            neighbors:
+              - {ip: 10.0.12.2, asn: 65002}
+            networks:
+              - 1.1.1.1/32
+        sw2:
+          ansible_host: clab-sonic-bgp-sw2
+          loopback_ip: 2.2.2.2/32
+          interfaces:
+            - {name: Ethernet0, ip: 10.0.12.2/30}
+            - {name: Ethernet4, ip: 10.0.23.1/30}
+          bgp:
+            asn: 65002
+            router_id: 2.2.2.2
+            neighbors:
+              - {ip: 10.0.12.1, asn: 65001}
+              - {ip: 10.0.23.2, asn: 65003}
+            networks:
+              - 2.2.2.2/32
+        sw3:
+          ansible_host: clab-sonic-bgp-sw3
+          loopback_ip: 3.3.3.3/32
+          interfaces:
+            - {name: Ethernet0, ip: 10.0.23.2/30}
+          bgp:
+            asn: 65003
+            router_id: 3.3.3.3
+            neighbors:
+              - {ip: 10.0.23.1, asn: 65002}
+            networks:
+              - 3.3.3.3/32
