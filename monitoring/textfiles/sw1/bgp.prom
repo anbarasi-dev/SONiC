@@ -1,0 +1,18 @@
+# HELP sonic_bgp_collect_ok 1 if BGP state was read successfully
+# TYPE sonic_bgp_collect_ok gauge
+sonic_bgp_collect_ok{switch="sw1"} 1
+# HELP sonic_bgp_peer_up 1 if BGP session is Established
+# TYPE sonic_bgp_peer_up gauge
+sonic_bgp_peer_up{switch="sw1",peer="10.0.12.2",remote_as="65002"} 1
+# HELP sonic_bgp_peer_prefixes_received Prefixes received from peer
+# TYPE sonic_bgp_peer_prefixes_received gauge
+sonic_bgp_peer_prefixes_received{switch="sw1",peer="10.0.12.2",remote_as="65002"} 2
+# HELP sonic_bgp_peer_uptime_seconds Session uptime in seconds
+# TYPE sonic_bgp_peer_uptime_seconds gauge
+sonic_bgp_peer_uptime_seconds{switch="sw1",peer="10.0.12.2",remote_as="65002"} 32361.0
+# HELP sonic_bgp_peer_messages_received_total BGP messages received
+# TYPE sonic_bgp_peer_messages_received_total counter
+sonic_bgp_peer_messages_received_total{switch="sw1",peer="10.0.12.2",remote_as="65002"} 551
+# HELP sonic_bgp_peer_messages_sent_total BGP messages sent
+# TYPE sonic_bgp_peer_messages_sent_total counter
+sonic_bgp_peer_messages_sent_total{switch="sw1",peer="10.0.12.2",remote_as="65002"} 551

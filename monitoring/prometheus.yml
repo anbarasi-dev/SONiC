@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/rules.yml
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # One node_exporter sidecar per switch (shares the switch network namespace)
+  - job_name: sonic
+    static_configs:
+      - targets: ['clab-sonic-bgp-sw1:9100']
+        labels: {switch: sw1}
+      - targets: ['clab-sonic-bgp-sw2:9100']
+        labels: {switch: sw2}
+      - targets: ['clab-sonic-bgp-sw3:9100']
+        labels: {switch: sw3}

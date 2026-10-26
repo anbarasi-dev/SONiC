@@ -1,0 +1,18 @@
+groups:
+  - name: sonic-bgp
+    rules:
+      - alert: BGPPeerDown
+        expr: sonic_bgp_peer_up == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "BGP peer {{ $labels.peer }} on {{ $labels.switch }} is down"
+
+      - alert: BGPMetricsMissing
+        expr: sonic_bgp_collect_ok == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Could not read BGP state from {{ $labels.switch }}"
