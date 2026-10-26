@@ -47,7 +47,7 @@ Two facts follow from this, and they cause most beginner errors:
 
 ## Prerequisites
 
-- The SONiC-VS BGP lab is running with BGP configured. See the BGP lab guide: `<link to the BGP lab repo>`.
+- The SONiC-VS BGP lab is running with BGP configured. See the BGP lab guide: https://github.com/anbarasi-dev/SONiC/tree/main/bgp.
 - Docker and Docker Compose are installed.
 - Python 3 is installed on the host.
 - The lab name is `sonic-bgp`, so the containers are named `clab-sonic-bgp-sw1`, `clab-sonic-bgp-sw2` and `clab-sonic-bgp-sw3`.
